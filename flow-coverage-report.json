@@ -1,0 +1,11 @@
+{
+  "concurrentFiles": 4,
+  "globExcludePatterns": [
+    "node_modules/**"
+  ],
+  "globIncludePatterns": [
+    "ramda-dissoc-example.js"
+  ],
+  "threshold": 100,
+  "reportTypes": "text"
+}

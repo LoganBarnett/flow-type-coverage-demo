@@ -1,0 +1,91 @@
+#+title:    Flow Type Coverage Demo
+#+author:   Logan Barnett
+#+email:    logustus@gmail.com
+#+date:     <2018-11-26 Mon>
+#+language: en
+#+tags:     flow
+
+* Flow Type Coverage Demo
+
+  Using Flow has been wonderful, but as part of using it in anger many of us
+  have seen its warts. One particularly nasty set of warts all relates to how a
+  particular variable can become typed as =any=. Once a variable is typed as
+  =any=, Flow is basically being told to _completely ignore_ the variable. Since
+  Flow is meant to be an incremental type system that is added to legacy
+  JavaScript projects in piecemeal this can be very helpful. However it can be
+  alarming when you see the various ways you can easily get Flow into a state
+  where it silently ignores segments of your code.
+
+  TODO - Provide links to tickets to these issues.
+
+** When does it happen?
+   This outlines when Flow just coerces a particular identifier to =any=. In
+   these cases it will never tell you explicitly that it has done this. You will
+   get no warnings, and your build pipeline will pass as if nothing was wrong.
+
+*** Exception in a try/catch
+
+**** The problem
+     Exception variables listed in the =catch= section are implicitly typed as
+     =any=. See =./try.js=.
+**** The fix
+     Using [[https://github.com/LoganBarnett/error-as-either][error-as-either]] accepts a function that might throw an error, and
+     provides an "Either" type back, which is basically the result or the error.
+     Flow will force you to figure out what you're looking at before you move
+     on. Generally speaking this should make other things easier since Eithers
+     are easier to compose than =throw=.
+
+*** Importing
+
+**** The problem
+     If you =import= or =require= from a file missing the =// @flow= annotation,
+     the import result will be of type =any=. See =./import.js= and
+     =./non-flow.js= for an example.
+
+**** The fix
+     There is an =eslint= plugin for Flow and a rule called
+     [[https://github.com/gajus/eslint-plugin-flowtype#require-valid-file-annotation][require-valid-file-annotation]] which will enforce that you files have a
+     *correct* Flow annotation at the top of each of your files. It will even
+     detect typos such as =// @floww=.
+
+*** window and global
+
+**** The problem
+    =window= for browser JavaScript and =global= for Node.JS both are typed as
+    =any= out of the box. See =window.js= for an example.
+
+**** The fix
+     (TODO - add more details)
+
+     Add a custom type for your own =window= or =global= that covers your needs.
+     Be careful about typing things that get assigned at some point but aren't
+     immediately available. It's more sound to treat these as Maybe types
+     instead.
+
+*** JSON.parse
+    (TODO flesh out)
+
+**** The problem
+     =JSON.parse= returns an =any= instead of =mixed= or some form of it.
+
+*** Server
+    (TODO flesh out)
+
+*** General issues with any
+
+**** The problem
+     There's a variety of ways for Flow to determine something should be =any=.
+     They aren't obvious when it happens, and the enumerated cases above aren't
+     necessarily exhaustive.
+
+**** The fix
+
+     [[https://github.com/rpl/flow-coverage-report][flow-coverage-report]] provides tooling you can add alongside running =flow
+     status= or =flow check= that can be configured to fail on some threshold of
+     uncovered code (100% coverage will enforce that =any= is never used).
+
+     Various linter integrations with text editors also allow for not only
+     showing Flow errors but also missing type coverage (sometimes this is a
+     separate linter plugin). In the future this repo might have a community
+     maintained list of plugin listings and configurations to get you started
+     quickly.

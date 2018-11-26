@@ -1,0 +1,15 @@
+{
+  "name": "flow-type-coverage-demo",
+  "version": "1.0.0",
+  "description": "Show off aspects of type coverage in Flow.",
+  "main": "index.js",
+  "author": "Logan Barnett <logustus@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "flow-bin": "0.86.0",
+    "flow-coverage-report": "0.6.0"
+  },
+  "scripts": {
+    "coverage": "flow-coverage-report --config flow-coverage-report.json"
+  }
+}
