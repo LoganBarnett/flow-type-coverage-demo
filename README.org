@@ -69,6 +69,29 @@ TODO - Provide links to tickets to these issues.
 ** Server
    (TODO flesh out)
 
+** Switch and unions with incorrect sentinel properties
+   A very common pattern in Flow is to do a =switch= or even an =if= statement
+   on a union that all shares one property. Check to see what the property is,
+   and inside the =case= or =if= statement, the type of the thing being checked
+   will be the specific type.
+
+*** the problem
+
+    If you use a value that doesn't exist in the union, or make a typo of that
+    value, it will refine the type of the union to =any=. This gotcha appears to
+    apply to =switch= and not =if=.
+
+    See =./missing-sentinel-value.js= for an example.
+
+*** the fix
+
+    The issue here is only solvable by using =if= exclusively. This might be
+    very undesirable because you can lose exhaustion - in other words, having
+    Flow produce an error if the =switch= doesn't check all possible scenarios.
+
+    See [[General issues with any]] for a less discipline based fix. The gist is it
+    involves adding type coverage checks to your type checks.
+
 ** General issues with any
 
 *** The problem
