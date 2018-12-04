@@ -81,7 +81,7 @@ TODO - Provide links to tickets to these issues.
     value, it will refine the type of the union to =any=. This gotcha appears to
     apply to =switch= and not =if=.
 
-    See =./missing-sentinel-value.js= for an example.
+    See [[./missing-sentinel-value.js]] for an example.
 
 *** the fix
 
