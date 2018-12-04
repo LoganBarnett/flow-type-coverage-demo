@@ -25,7 +25,7 @@ TODO - Provide links to tickets to these issues.
 
 *** The problem
     Exception variables listed in the =catch= section are implicitly typed as
-    =any=. See =./try.js=.
+    =any=. See [[./try.js]].
 *** The fix
     Using [[https://github.com/LoganBarnett/error-as-either][error-as-either]] accepts a function that might throw an error, and
     provides an "Either" type back, which is basically the result or the error.
@@ -37,8 +37,8 @@ TODO - Provide links to tickets to these issues.
 
 *** The problem
     If you =import= or =require= from a file missing the =// @flow= annotation,
-    the import result will be of type =any=. See =./import.js= and
-    =./non-flow.js= for an example.
+    the import result will be of type =any=. See [[./import.js]] and
+    [[./non-flow.js]] for an example.
 
 *** The fix
     There is an =eslint= plugin for Flow and a rule called
@@ -50,7 +50,7 @@ TODO - Provide links to tickets to these issues.
 
 *** The problem
     =window= for browser JavaScript and =global= for Node.JS both are typed as
-    =any= out of the box. See =window.js= for an example.
+    =any= out of the box. See [[./window.js]] for an example.
 
 *** The fix
     (TODO - add more details)
