@@ -92,6 +92,58 @@ TODO - Provide links to tickets to these issues.
     See [[General issues with any]] for a less discipline based fix. The gist is it
     involves adding type coverage checks to your type checks.
 
+** =instanceof=
+*** Fails to flag error when type comparison is invalid
+
+    In JavaScript it's frequent to use =instanceof= as a means of checking at
+    runtime if a particular variable is represented by a known class or
+    prototype. In Flow you can use =instanceof= to refine the type of a
+    variable. You have code such as this:
+
+    #+begin_src js
+
+      function foo(x: mixed) {
+        if(x instanceof String) {
+          return x.toUpperCase() // Here you can treat x as a string.
+        } else {
+          return ''
+        }
+      }
+    #+end_src
+
+    Inside of the =if= body, =x= can be treated as a =String= because its type
+    has been refined by the =if(x instanceof String)= check.
+
+**** the problem
+
+     If you do an =instanceof= comparison on an invalid comparison, Flow loses
+     type information instead of refining it, or showing an error.
+
+     See [[./instanceof.js]] for an example.
+
+     Flow issue [[https://github.com/facebook/flow/issues/2282][2282]] tracks this problem.
+
+**** the fix
+
+     This is yet another case where Flow simply coerces the variable to =any=
+     silently. You'll want type coverage checking to prove that this has not
+     happened to you. In order to actually fix the problem once you've detected
+     it, you'll need to make sure the type you're comparing with =instanceof= is
+     part of the union.
+
+     Checking for errors thrown is a common use case:
+
+    #+begin_src js
+
+      function getErrorReason(e: mixed | Error) {
+        if(e instanceof Error) {
+          return e.message
+        } else {
+          return String(e)
+        }
+      }
+    #+end_src
+
 ** General issues with any
 
 *** The problem
